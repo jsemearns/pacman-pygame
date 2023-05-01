@@ -1,10 +1,7 @@
-import os
 import pygame
-import pacman
-
-# import image2gif
 from pygame.locals import *
-from random import randint
+
+import pacman
 
 # Grid properties
 CELL_WIDTH = 70
@@ -27,14 +24,6 @@ GREEN = (76, 175, 80)
 BLUE = (33, 150, 243)
 YELLOW = (253, 216, 53)
 
-# grid = []
-# for row in range(10):
-#     grid.append([])
-#     for column in range(10):
-#         grid[row].append(randint(1,5))
-
-# grid[0][0] = PACMAN
-
 
 width = (CELL_WIDTH * GRID_WIDTH) + (CELL_MARGIN * (GRID_WIDTH - 1))
 height = (CELL_HEIGHT * GRID_HEIGHT) + (CELL_MARGIN * (GRID_HEIGHT - 1)) + 250
@@ -48,7 +37,7 @@ def main():
     pygame.init()
 
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('PacFix')
+    pygame.display.set_caption('PyPac')
     pygame.mouse.set_visible(0)
 
     screen.fill(WHITE)
@@ -85,10 +74,6 @@ def main():
                 coin_values.append(v)
                 count = 0
             time -= 1
-
-            # filename = 'screenshot{}.jpg'.format(len(screenshots))
-            # screenshots.append(filename)
-            # pygame.image.save(screen, filename)
 
         for column in range(10):
             for row in range(10):
@@ -184,13 +169,11 @@ def main():
             screen.fill(BLACK)
             label = font.render('SCORE: {}'.format(pacman.PACMAN.points), 1, WHITE)
             screen.blit(label, (width/2, height/2))
-            # from PIL import Image
-            # s = [Image.open(s) for s in screenshots]
-            # image2gif.writeGif("replay.gif", s)
 
 
         pygame.display.flip()
             # game_over = True
+    pygame.quit()
 
 
 
@@ -200,4 +183,5 @@ def get_graph_point(x, y):
     return (x, y)
 
 
-if __name__ == '__main__': main()
+if __name__ == '__main__':
+    main()

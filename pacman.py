@@ -1,4 +1,3 @@
-import os
 from random import randint
 
 WIDTH = 10
@@ -30,20 +29,19 @@ class PacMan():
 
     def moveTo(self, coordinate):
         if isinstance(coordinate.entity, Wall):
-            print "WALL! Cannot move."
+            print("WALL! Cannot move.")
         else:
             if isinstance(coordinate.entity, Coin):
                 self.points = self.points + coordinate.entity.getAmount()
-                print "POINTS: {}".format(self.points)
+                print("POINTS: {}".format(self.points))
 
             # Update pacman's coordinates
             self.coordinate.entity = None
             self.coordinate = coordinate
             self.coordinate.entity = self
-            # print "MOVED TO " + self.direction
 
         displayBoard()
-        print ""
+        print("")
 
 
 class Wall():
@@ -84,10 +82,10 @@ def setCoin(color, x, y):
 
 
 def displayBoard():
-    print "POINTS: {}".format(PACMAN.points)
+    print("POINTS: {}".format(PACMAN.points))
     for y in range(HEIGHT):
         row_str = ""
-        print "*************************************************************"
+        print("*************************************************************")
         for x in range(WIDTH):
             if isinstance(BOARD[x][y].entity, PacMan):
                 row_str += "  X  |"
@@ -102,8 +100,8 @@ def displayBoard():
             else:
                 # row_str += " {},{} |".format(x, y)
                 row_str += "     |"
-        print "|" + row_str
-    print "*************************************************************"
+        print("|" + row_str)
+    print("*************************************************************")
 
 
 def setColorValue():
@@ -123,7 +121,6 @@ def createCoins():
 
 def createBoard():
     """ Create the walls and coins for the board. """
-    os.system("start /home/justin/Documents/hackathon/pygame/bgm.mp3")
     setWall(1, 1)
     setWall(1, 2)
     setWall(1, 3)
@@ -168,9 +165,7 @@ def createBoard():
 
     # Assign coins to EMPTY coordinates in the board.
     createCoins()
-
     displayBoard()
-
 
 # CREATE BOARD NOW!
 createBoard()
@@ -186,22 +181,33 @@ def loop():
     if next_y + 1 > HEIGHT:
         next_y -= 1
 
-    if PACMAN.direction == 'right':
-        PACMAN.moveTo(BOARD[next_x + 1][next_y])
-    elif PACMAN.direction == 'left':
-        PACMAN.moveTo(BOARD[next_x - 1][next_y])
-    elif PACMAN.direction == 'up':
-        PACMAN.moveTo(BOARD[next_x][next_y - 1])
-    elif PACMAN.direction == 'down':
-        PACMAN.moveTo(BOARD[next_x][next_y + 1])
-
-# loop()
-# loop()
-# PACMAN.direction = 'down'
-# loop()
-# loop()
-# setColorValue()
-# loop()
-# PACMAN.direction = 'up'
-# loop()
-# loop()
+    try:
+        if PACMAN.direction == 'right':
+            PACMAN.moveTo(BOARD[next_x + 1][next_y])
+        elif PACMAN.direction == 'left':
+            PACMAN.moveTo(BOARD[next_x - 1][next_y])
+        elif PACMAN.direction == 'up':
+            PACMAN.moveTo(BOARD[next_x][next_y - 1])
+        elif PACMAN.direction == 'down':
+            PACMAN.moveTo(BOARD[next_x][next_y + 1])
+    except IndexError:
+        if PACMAN.direction == 'right':
+            if isinstance(BOARD[0][next_y].entity, Wall):
+                PACMAN.moveTo(BOARD[next_x][next_y])
+            else:
+                PACMAN.moveTo(BOARD[0][next_y])
+        if PACMAN.direction == 'left':
+            if isinstance(BOARD[WIDTH-1][next_y].entity, Wall):
+                PACMAN.moveTo(BOARD[next_x][next_y])
+            else:
+                PACMAN.moveTo(BOARD[WIDTH-1][next_y])
+        if PACMAN.direction == 'up':
+            if isinstance(BOARD[next_x][HEIGHT-1].entity, Wall):
+                PACMAN.moveTo(BOARD[next_x][next_y])
+            else:
+                PACMAN.moveTo(BOARD[next_x][HEIGHT-1])
+        if PACMAN.direction == 'down':
+            if isinstance(BOARD[next_x][0].entity, Wall):
+                PACMAN.moveTo(BOARD[next_x][next_y])
+            else:
+                PACMAN.moveTo(BOARD[next_x][0])
